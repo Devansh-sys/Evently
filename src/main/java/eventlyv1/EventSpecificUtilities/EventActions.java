@@ -23,7 +23,7 @@ public class EventActions {
                 .setDescription(eventDetails.getDescription());
 
 
-        // Process start time
+
         String startDateStr = eventDetails.getStartDateTime();
         String startTime = toRfc3339(startDateStr);
         DateTime startDateTime = new DateTime(startTime);
@@ -32,7 +32,7 @@ public class EventActions {
                 .setTimeZone("Asia/Kolkata");
         event.setStart(start);
 
-// Process end time
+
         String endDateStr = eventDetails.getEndDateTime();
         String endTime = toRfc3339(endDateStr);
         DateTime endDateTime = new DateTime(endTime);
@@ -41,7 +41,7 @@ public class EventActions {
                 .setTimeZone("Asia/Kolkata");
         event.setEnd(end);
 
-        String calendarId = "primary"; // or "primary"
+        String calendarId = "primary";
         event = service.events().insert(calendarId, event).execute();
 
         System.out.printf("Event created: %s\n", event.getHtmlLink());
@@ -52,11 +52,11 @@ public class EventActions {
 
     private static String toRfc3339(String input) {
         try {
-            // Try parsing with timezone
+
             OffsetDateTime odt = OffsetDateTime.parse(input, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
             return odt.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         } catch (Exception e) {
-            // Fallback: parse as LocalDateTime (no timezone), assume UTC
+
             LocalDateTime ldt = LocalDateTime.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
             return ldt.atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         }
@@ -72,8 +72,8 @@ public class EventActions {
                     .execute();
 
             List<Event> items = events.getItems();
-        List<String> next10Events = getStrings(items);
-        return next10Events;
+
+        return getStrings(items);
         }
 
     private static List<String> getStrings(List<Event> items) {
@@ -86,9 +86,9 @@ public class EventActions {
                 String timeStr;
                 if (start == null) {
                     start = event.getStart().getDate();
-                    timeStr = start.toString().substring(0, 10); // YYYY-MM-DD format for all-day events
+                    timeStr = start.toString().substring(0, 10);
                 } else {
-                    // Convert to more readable format
+
                     LocalDateTime localDateTime = LocalDateTime.parse(start.toString(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
                     timeStr = localDateTime.format(DateTimeFormatter.ofPattern("MMM dd, yyyy 'at' hh:mm a"));
                 }
@@ -111,7 +111,7 @@ public class EventActions {
         if (items.isEmpty()) {
             return "No past events found.";
         } else {
-            Event lastEvent = items.get(0);
+            Event lastEvent = items.getFirst();
             DateTime start = lastEvent.getStart().getDateTime();
             if (start == null) {
                 start = lastEvent.getStart().getDate();
@@ -122,11 +122,13 @@ public class EventActions {
             String location = lastEvent.getLocation() != null ? lastEvent.getLocation() : "📍 Location not specified";
             String description = lastEvent.getDescription() != null ? lastEvent.getDescription() : "📝 No description available";
 
-            return String.format(" 🔙 *Last Event*\n\n" +
-                            "**📌 Title:** %s\n" +
-                            "**📅 Start Time:** %s\n" +
-                            "**📍 Location:** %s\n" +
-                            "**📝 Description:** %s",
+            return String.format("""
+                             🔙 *Last Event*
+                            
+                            **📌 Title:** %s
+                            **📅 Start Time:** %s
+                            **📍 Location:** %s
+                            **📝 Description:** %s""",
                     lastEvent.getSummary(), startTime, location, description);
         }
     }
@@ -144,7 +146,7 @@ public class EventActions {
         if (items.isEmpty()) {
             return "No upcoming events found.";
         } else {
-            Event nextEvent = items.get(0);
+            Event nextEvent = items.getFirst();
             DateTime start = nextEvent.getStart().getDateTime();
             if (start == null) {
                 start = nextEvent.getStart().getDate();
@@ -155,11 +157,13 @@ public class EventActions {
             String location = nextEvent.getLocation() != null ? nextEvent.getLocation() : "📍 Location not specified";
             String description = nextEvent.getDescription() != null ? nextEvent.getDescription() : "📝 No description available";
 
-            return String.format("  🎉 *Next Event* \n\n" +
-                            "**📌 Title:** %s\n" +
-                            "**📅 Start Time:** %s\n" +
-                            "**📍 Location:** %s\n" +
-                            "**📝 Description:** %s",
+            return String.format("""
+                              🎉 *Next Event*\s
+                            
+                            **📌 Title:** %s
+                            **📅 Start Time:** %s
+                            **📍 Location:** %s
+                            **📝 Description:** %s""",
                     nextEvent.getSummary(), startTime, location, description);
         }
     }

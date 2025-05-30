@@ -14,7 +14,7 @@ public class StartCommand implements Command {
 
         StringBuilder messageBuilder = new StringBuilder();
         messageBuilder.append("👋 *Welcome to Evently!*\n\n");
-        // Check if user has connected their calendar
+
         messageBuilder.append("🎯 Here’s what I can do for you:\n\n");
         messageBuilder.append("➕ *add an event*: Just forward me the event details as a message. I'll read it and add it to your calendar automatically!\n\n");
         messageBuilder.append("🗨️below are the *Commands* and their actions\n");
@@ -31,7 +31,7 @@ public class StartCommand implements Command {
                 .build();
 
         try {
-            context.getBot().execute(message); // Make sure your context provides a reference to the bot
+            context.getBot().execute(message);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

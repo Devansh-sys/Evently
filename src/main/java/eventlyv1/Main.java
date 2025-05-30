@@ -22,7 +22,7 @@ public class Main {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
             Bot bot = new Bot();
             botsApi.registerBot(bot);
-            // Your bot setup
+
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

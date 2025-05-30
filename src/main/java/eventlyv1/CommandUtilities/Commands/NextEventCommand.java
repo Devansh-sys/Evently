@@ -11,7 +11,7 @@ import java.io.IOException;
 
 
 public class NextEventCommand implements Command {
-    //write the logic for the next event command here
+
     public void executeCommand(CommandContext context, Calendar service) throws IOException {
         Long chatId = context.getChatId();
         Long userId = context.getUserId();
@@ -23,7 +23,7 @@ public class NextEventCommand implements Command {
                 .build();
 
         try {
-            context.getBot().execute(message); // Make sure your context provides a reference to the bot
+            context.getBot().execute(message);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

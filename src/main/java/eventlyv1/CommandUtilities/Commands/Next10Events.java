@@ -23,7 +23,7 @@ public class Next10Events implements Command {
                 .build();
 
         try {
-            context.getBot().execute(message); // Make sure your context provides a reference to the bot
+            context.getBot().execute(message);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

@@ -16,8 +16,7 @@ public class GeminiEventExtractor {
     private static final String GEMINI_API_URL = dotenv.get("GEMINI_API_URL");
     public static EventDetails extractEvent(String message) {
         try {
-            // Prepare the prompt for event extraction
-            // Get current date and time
+
             ZonedDateTime now = ZonedDateTime.now();
             String currentDate = now.format(DateTimeFormatter.ofPattern("EEEE, MMMM dd, yyyy"));
             String currentTime = now.format(DateTimeFormatter.ofPattern("HH:mm z"));
@@ -71,24 +70,24 @@ public class GeminiEventExtractor {
                     .path("parts").get(0)
                     .path("text").asText();
 
-            // 3. Extract JSON block from markdown
+
             String jsonBlock = extractJsonFromMarkdown(text);
 
-            // Parse the JSON block into EventDetails
+
             return mapper.readValue(jsonBlock, EventDetails.class);
         } catch (Exception e) {
             e.printStackTrace();
             return new EventDetails();
         }
     }
-    // Helper method to extract JSON from markdown code block
+
     private static String extractJsonFromMarkdown(String text) {
-        // Remove markdown code block if present
+
         int start = text.indexOf("{");
         int end = text.lastIndexOf("}");
         if (start != -1 && end != -1 && end > start) {
             return text.substring(start, end + 1);
         }
-        return text; // fallback: return as is
+        return text;
     }
 }

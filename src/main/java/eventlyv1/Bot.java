@@ -32,19 +32,9 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "8197552201:AAGqpM5roDVSiX1xlTQVaJ6Ik2J-VwEhfHI";
+        return io.github.cdimascio.dotenv.Dotenv.load().get("TELEGRAM_BOT_TOKEN");
     }
-//
-//    In the Telegram Bot API, an Update can represent different types of events, such as:
-//    message: A standard message sent by a user (text, photo, sticker, etc.).
-//    edited_message: An edited version of a previously sent message.
-//    channel_post: A message sent to a channel.
-//    edited_channel_post: An edited channel message.
-//    inline_query: An inline query from a user.
-//    chosen_inline_result: A result chosen from an inline query.
-//            callback_query: A callback from an inline keyboard button.
-//            shipping_query, pre_checkout_query, poll, poll_answer, etc.
-//            Commands (like /start, /help) are just text messages that start with /. They are included in the message type, so update.hasMessage() will be true for commands as well.
+
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -64,7 +54,7 @@ public class Bot extends TelegramLongPollingBot {
                         .setApplicationName(APPLICATION_NAME)
                         .build();
             } catch (IOException e) {
-                // Assume getAuthorizationUrl is a static method in ConnectToCalendar
+
                 String authUrl = ConnectToCalendar.getAuthorizationUrl(context.getUserId().toString());
                 SendMessage authMessage = SendMessage.builder()
                         .chatId(context.getChatId().toString())
@@ -98,7 +88,7 @@ public class Bot extends TelegramLongPollingBot {
                     throw new RuntimeException(e);
                 }
             }else{
-                // Step 3: Call Gemini API to extract event details
+
                 EventDetails eventDetails = GeminiEventExtractor.extractEvent(context.getMessageText());
                 if(eventDetails.getSummary().isEmpty()){
                     SendMessage errorMessage = SendMessage.builder()
@@ -113,7 +103,7 @@ public class Bot extends TelegramLongPollingBot {
                     }
                     return;
                 }
-                // Step 4: Add event to Google Calendar
+
                 EventActions eventActions = new EventActions();
                 try {
                     eventActions.addEvent(eventDetails,service);

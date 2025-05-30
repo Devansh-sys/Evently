@@ -24,32 +24,18 @@ import java.util.Collections;
 import java.util.List;
 
 public class ConnectToCalendar {
-    /**
-     * Application name.
-     */
+
     protected static final String APPLICATION_NAME = "Google Calendar API Java Quickstart";
-    /**
-     * Global instance of the JSON factory.
-     */
+
     public static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
 
-    /**
-     * Global instance of the scopes required by this quickstart.
-     * If modifying these scopes, delete your previously saved tokens/ folder.
-     */
+
     protected static final List<String> SCOPES =
             Collections.singletonList(CalendarScopes.CALENDAR);
     private static final Dotenv dotenv = Dotenv.load();
     protected static final String CREDENTIALS_FILE_PATH = dotenv.get("CREDENTIALS_FILE_PATH", "/credentials.json");
 
-    /**
-     * Creates an authorized Credential object.
-     *
-     * @param HTTP_TRANSPORT The network HTTP Transport.
-     * @return An authorized Credential object.
-     * @throws IOException If the credentials.json file cannot be found.
-     */
-    // In ConnectToCalendar.java
+
 
     public static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT, String userTelegramId) throws IOException, SQLException, GeneralSecurityException {
         InputStream in = ConnectToCalendar.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
@@ -66,7 +52,7 @@ public class ConnectToCalendar {
         String clientId = clientSecrets.getDetails().getClientId();
         String clientSecret = clientSecrets.getDetails().getClientSecret();
 
-        // Try to load existing credentials without triggering browser
+
         GoogleToken token = GoogleTokenDAO.getToken(userTelegramId);
         if (token != null) {
             Credential credential = new Credential.Builder(BearerToken.authorizationHeaderAccessMethod())
@@ -75,7 +61,7 @@ public class ConnectToCalendar {
                     .setTokenServerEncodedUrl("https://oauth2.googleapis.com/token")
                     .setClientAuthentication(new ClientParametersAuthentication(clientId, clientSecret))
                     .build();
-            // Set tokens and expiry loaded from your database
+
             credential.setAccessToken(token.accessToken);
             credential.setRefreshToken(token.refreshToken);
             credential.setExpirationTimeMilliseconds(token.expiryTime);
