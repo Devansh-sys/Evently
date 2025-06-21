@@ -83,16 +83,26 @@ public class EventActions {
         } else {
             for (Event event : items) {
                 DateTime start = event.getStart().getDateTime();
-                String timeStr;
+                DateTime end = event.getEnd().getDateTime();
+                String startTimeStr, endTimeStr;
+
                 if (start == null) {
                     start = event.getStart().getDate();
-                    timeStr = start.toString().substring(0, 10);
+                    startTimeStr = start.toString().substring(0, 10);
                 } else {
-
-                    LocalDateTime localDateTime = LocalDateTime.parse(start.toString(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-                    timeStr = localDateTime.format(DateTimeFormatter.ofPattern("MMM dd, yyyy 'at' hh:mm a"));
+                    LocalDateTime localStartDateTime = LocalDateTime.parse(start.toString(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+                    startTimeStr = localStartDateTime.format(DateTimeFormatter.ofPattern("MMM dd, yyyy 'at' hh:mm a"));
                 }
-                next10Events.add(String.format("👀 %s\n📅 %s", event.getSummary(), timeStr));
+
+                if (end == null) {
+                    end = event.getEnd().getDate();
+                    endTimeStr = end.toString().substring(0, 10);
+                } else {
+                    LocalDateTime localEndDateTime = LocalDateTime.parse(end.toString(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+                    endTimeStr = localEndDateTime.format(DateTimeFormatter.ofPattern("MMM dd, yyyy 'at' hh:mm a"));
+                }
+
+                next10Events.add(String.format("👀 %s\n📅 Start: %s\n📅 End: %s", event.getSummary(), startTimeStr, endTimeStr));
             }
         }
         return next10Events;

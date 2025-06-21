@@ -18,10 +18,10 @@ public class StartCommand implements Command {
         messageBuilder.append("🎯 Here’s what I can do for you:\n\n");
         messageBuilder.append("➕ *add an event*: Just forward me the event details as a message. I'll read it and add it to your calendar automatically!\n\n");
         messageBuilder.append("🗨️below are the *Commands* and their actions\n");
-        messageBuilder.append("👉 1. `/nextevent` – View your next upcoming event\n");
-        messageBuilder.append("👉 2. `/lastevent` – View your most recent past event\n");
-        messageBuilder.append("👉 3. `/next10event` – See your next 10 upcoming events\n\n");
-        messageBuilder.append("👉 4. `/help` – See all commands/n\n");
+        messageBuilder.append("👉 1. /nextevent – View your next upcoming event\n");
+        messageBuilder.append("👉 2. /lastevent – View your most recent past event\n");
+        messageBuilder.append("👉 3. /next10event – See your next 10 upcoming events\n\n");
+        messageBuilder.append("👉 4. /help – See all commands/n\n");
         messageBuilder.append("💔 _If your message is neither an event nor one of the above commands, I might not be of much use to you for now._");
 
         SendMessage message = SendMessage.builder()

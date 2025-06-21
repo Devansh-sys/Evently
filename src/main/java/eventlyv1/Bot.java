@@ -1,5 +1,6 @@
 package eventlyv1;
 
+import com.google.api.client.auth.oauth2.TokenResponseException;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.services.calendar.Calendar;
@@ -53,16 +54,18 @@ public class Bot extends TelegramLongPollingBot {
                 service = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT, context.getUserId().toString()))
                         .setApplicationName(APPLICATION_NAME)
                         .build();
-            } catch (IOException e) {
+            } catch (IOException e ) {
 
                 String authUrl = ConnectToCalendar.getAuthorizationUrl(context.getUserId().toString());
                 SendMessage authMessage = SendMessage.builder()
                         .chatId(context.getChatId().toString())
-                        .text("🔗 *Calendar Connection Required*\n\n" +
+                        .text("🔗 Calendar Connection Required\n\n" +
                                 "Your calendar is not connected yet. Please connect it via this link:\n\n" +
                                 "Don't be shy to connect – it's safe and easy. Click below:\n" + authUrl)
-                        .parseMode("Markdown")
+//                        .parseMode("Markdown")
                         .build();
+                System.out.println("Generated URL: " + authUrl);
+
                 try {
                     execute(authMessage);
                 } catch (TelegramApiException ex) {

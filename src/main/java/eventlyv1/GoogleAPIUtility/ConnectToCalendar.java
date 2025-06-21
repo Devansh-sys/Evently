@@ -3,6 +3,7 @@ package eventlyv1.GoogleAPIUtility;
 import com.google.api.client.auth.oauth2.BearerToken;
 import com.google.api.client.auth.oauth2.ClientParametersAuthentication;
 import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.auth.oauth2.TokenResponseException;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -37,7 +38,7 @@ public class ConnectToCalendar {
 
 
 
-    public static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT, String userTelegramId) throws IOException, SQLException, GeneralSecurityException {
+    public static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT, String userTelegramId) throws IOException, SQLException, GeneralSecurityException , TokenResponseException {
         InputStream in = ConnectToCalendar.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         if (in == null) {
             throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
@@ -65,6 +66,17 @@ public class ConnectToCalendar {
             credential.setAccessToken(token.accessToken);
             credential.setRefreshToken(token.refreshToken);
             credential.setExpirationTimeMilliseconds(token.expiryTime);
+
+            if (credential.getAccessToken() == null || credential.getExpirationTimeMilliseconds() <= System.currentTimeMillis()) {
+                try {
+                    credential.refreshToken();
+                    token.accessToken = credential.getAccessToken();
+                    token.expiryTime = credential.getExpirationTimeMilliseconds();
+                    GoogleTokenDAO.saveOrUpdateToken(token); // Update the database with new token details
+                } catch (IOException e) {
+                    throw new IOException("Failed to refresh access token for user: " + userTelegramId, e);
+                }
+            }
             return credential;
         } else {
             throw new IOException("No credentials found for user: " + userTelegramId);
