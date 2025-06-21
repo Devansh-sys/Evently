@@ -65,7 +65,7 @@ Evently is a Java-based Telegram bot engineered for seamless, intelligent, and s
 
 1. **Clone the repository**
 
-git clone https://github.com/yourusername/evently-telegram-bot.git
+git clone [https://github.com/Devansh-sys/Evently.git](https://github.com/Devansh-sys/Evently.git)
 cd evently-telegram-bot
 
 
