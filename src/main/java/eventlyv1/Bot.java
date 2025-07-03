@@ -123,7 +123,7 @@ public class Bot extends TelegramLongPollingBot {
                             .parseMode("Markdown")
                             .build();
                     execute(confirmation);
-                    execute(confirmation);
+
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 } catch (TelegramApiException e) {
