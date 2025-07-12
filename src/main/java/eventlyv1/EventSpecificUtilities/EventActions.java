@@ -16,7 +16,7 @@ import java.util.List;
 
 
 public class EventActions {
-    public static void addEvent(EventDetails eventDetails, Calendar service) throws IOException {
+    public static String addEvent(EventDetails eventDetails, Calendar service) throws IOException {
         Event event = new Event()
                 .setSummary(eventDetails.getSummary())
                 .setLocation(eventDetails.getLocation())
@@ -41,10 +41,24 @@ public class EventActions {
                 .setTimeZone("Asia/Kolkata");
         event.setEnd(end);
 
+        if (startDateTime.getValue() < System.currentTimeMillis()- 24 * 60 * 60 * 1000) {
+            System.out.println(startDateTime);
+            System.out.println(endDateTime);
+            throw new IllegalArgumentException("Start date must be greater than the current date.");
+        }
+
+        if (startDateTime.getValue() >= endDateTime.getValue()) {
+            System.out.println(startDateTime);
+            System.out.println(endDateTime);
+            throw new IllegalArgumentException("Start date must be before the end date.");
+        }
+
         String calendarId = "primary";
         event = service.events().insert(calendarId, event).execute();
 
         System.out.printf("Event created: %s\n", event.getHtmlLink());
+        String htmlLink = event.getHtmlLink();
+        return htmlLink;
 
 
     }
@@ -52,11 +66,12 @@ public class EventActions {
 
     private static String toRfc3339(String input) {
         try {
-
+            if (!input.contains("Z") && !input.matches(".*[+-]\\d{2}:\\d{2}$")) {
+                input += "Z"; // Append UTC offset if missing
+            }
             OffsetDateTime odt = OffsetDateTime.parse(input, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
             return odt.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         } catch (Exception e) {
-
             LocalDateTime ldt = LocalDateTime.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
             return ldt.atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         }

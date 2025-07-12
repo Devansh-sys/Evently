@@ -24,7 +24,7 @@ import eventlyv1.DBUtility.GoogleTokenDAO;
 
 public class OAuthCallbackServer {
     private static final Dotenv dotenv = Dotenv.load();
-    private static final int PORT = Integer.parseInt(dotenv.get("PORT", "8888"));
+
     private static final String CALLBACK_PATH = dotenv.get("CALLBACK_PATH", "/Callback");
     private static final String CREDENTIALS_FILE_PATH = dotenv.get("CREDENTIALS_FILE_PATH", "/credentials.json");
 
@@ -32,11 +32,27 @@ public class OAuthCallbackServer {
     private static final List<String> SCOPES = Collections.singletonList("https://www.googleapis.com/auth/calendar");
 
     public static void start() throws Exception {
-        HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
+        // IMPORTANT: Replit's public Webview works on port 8080
+        HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+
         server.createContext(CALLBACK_PATH, new CallbackHandler());
+
+        // This creates a NEW handler for the keep-alive ping on the root path "/"
+        server.createContext("/", new KeepAliveHandler());
         server.setExecutor(null);
         server.start();
-        System.out.println("OAuth callback server started on http://localhost:" + PORT + CALLBACK_PATH);
+        System.out.println("Server started on port 8080. Listening for OAuth on " + CALLBACK_PATH + " and keep-alive on /");
+    }
+
+    static class KeepAliveHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            String response = "Bot is alive";
+            exchange.sendResponseHeaders(200, response.length());
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(response.getBytes());
+            }
+        }
     }
 
     static class CallbackHandler implements HttpHandler {
@@ -64,11 +80,14 @@ public class OAuthCallbackServer {
                             GoogleNetHttpTransport.newTrustedTransport(), JSON_FACTORY, clientSecrets, SCOPES)
                             .setAccessType("offline")
                             .build();
+
+                    String publicUrl = System.getenv("PUBLIC_URL");
+                    String redirectUri = publicUrl + CALLBACK_PATH;
+
                     var tokenResponse = flow.newTokenRequest(code)
-                            .setRedirectUri("http://localhost:8888/Callback")
+                            .setRedirectUri(redirectUri)
                             .execute();
-                    // Add these imports if needed:
-// import com.google.api.client.auth.oauth2.ClientParametersAuthentication;
+
 
                     String clientId = clientSecrets.getDetails().getClientId();
                     String clientSecret = clientSecrets.getDetails().getClientSecret();
@@ -116,39 +135,3 @@ public class OAuthCallbackServer {
     }
 }
 
-
-//import javax.crypto.Cipher;
-//import javax.crypto.KeyGenerator;
-//import javax.crypto.SecretKey;
-//import javax.crypto.spec.SecretKeySpec;
-//import java.util.Base64;
-//
-//public class EncryptionUtil {
-//    private static final String ALGORITHM = "AES";
-//
-//    public static String encrypt(String data, String key) throws Exception {
-//        SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), ALGORITHM);
-//        Cipher cipher = Cipher.getInstance(ALGORITHM);
-//        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-//        byte[] encryptedData = cipher.doFinal(data.getBytes());
-//        return Base64.getEncoder().encodeToString(encryptedData);
-//    }
-//
-//    public static String decrypt(String encryptedData, String key) throws Exception {
-//        SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), ALGORITHM);
-//        Cipher cipher = Cipher.getInstance(ALGORITHM);
-//        cipher.init(Cipher.DECRYPT_MODE, secretKey);
-//        byte[] decodedData = Base64.getDecoder().decode(encryptedData);
-//        return new String(cipher.doFinal(decodedData));
-//    }
-//}
-
-//
-//String encryptionKey = dotenv.get("ENCRYPTION_KEY"); // Store this securely
-//GoogleToken token = new GoogleToken(
-//        state,
-//        EncryptionUtil.encrypt(credential.getAccessToken(), encryptionKey),
-//        EncryptionUtil.encrypt(credential.getRefreshToken(), encryptionKey),
-//        "Bearer",
-//        credential.getExpirationTimeMilliseconds()
-//);

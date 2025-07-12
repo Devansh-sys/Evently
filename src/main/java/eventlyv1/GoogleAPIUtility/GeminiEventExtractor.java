@@ -25,7 +25,7 @@ public class GeminiEventExtractor {
                     + "If details are not explicitly mentioned, infer them from context. "
                     + "If the message refers to a relative date such as tomorrow, this weekend, or next day, convert it to the specific calendar date and time "
                     + "based on today's date, which is " + currentDate + ", and the current local time, which is " + currentTime + ". "
-                    +"startDateTime should be before endDateTime. "+"Don,t keep timeRange empty, if the time is not mentioned, use the current time as startDateTime and next day as endDateTime. "
+                    +"startDateTime should be before endDateTime. "+"Don,t keep timeRange empty, if the time is not mentioned, use the current date's 12 am as startDateTime and next day as endDateTime. "
                     + "If a field cannot be inferred, leave it blank except times, which should default as above. Return as JSON." + message;
 
             String jsonRequest = "{ \"contents\": [{ \"parts\": [{ \"text\": \"" + prompt + "\" }] }] }";
