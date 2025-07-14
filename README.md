@@ -113,9 +113,9 @@ Pull requests are welcome! For major changes, please open an issue first to disc
 ---
 
 <p align="center">
-  <img src="assets/telegram-bot-icon.png" alt="Telegram Bot" width="60"/>
-  <img src="assets/google-gemini-icon.png" alt="Google Gemini" width="60"/>
-  <img src="assets/google-calendar-icon.png" alt="Google Calendar" width="60"/>
-  <img src="assets/supabase-icon.png" alt="Supabase" width="60"/>
-  <img src="assets/java-icon.png" alt="Java" width="60"/>
+  <img src="https://i.pinimg.com/736x/b6/0d/e7/b60de7b5d546e6be01898eaabc01f79e.jpg" alt="Telegram Bot" width="60"/>
+  <img src="https://tse3.mm.bing.net/th/id/OIP.ZPtdmwGk9OG8A1AFjWNIeQAAAA?rs=1&pid=ImgDetMain&o=7&rm=3" width="60"/>
+  <img src="https://tse1.mm.bing.net/th/id/OIP.uksP1o57SCJJW91tgSWY7gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Google Calendar" width="60"/>
+  <img src="https://cf.appdrag.com/dashboard-openvm-clo-b2d42c/uploads/supabase-TAiY.png" alt="Supabase" width="60"/>
+  <img src="https://download.logo.wine/logo/Java_(programming_language)/Java_(programming_language)-Logo.wine.png" alt="Java" width="60"/>
 </p>
