@@ -24,7 +24,7 @@ import eventlyv1.DBUtility.GoogleTokenDAO;
 
 public class OAuthCallbackServer {
     private static final Dotenv dotenv = Dotenv.load();
-
+    private static final int PORT = Integer.parseInt(dotenv.get("PORT", "8888"));
     private static final String CALLBACK_PATH = dotenv.get("CALLBACK_PATH", "/Callback");
     private static final String CREDENTIALS_FILE_PATH = dotenv.get("CREDENTIALS_FILE_PATH", "/credentials.json");
 
@@ -32,28 +32,13 @@ public class OAuthCallbackServer {
     private static final List<String> SCOPES = Collections.singletonList("https://www.googleapis.com/auth/calendar");
 
     public static void start() throws Exception {
-        // IMPORTANT: Replit's public Webview works on port 8080
-        HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
-
+        HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
         server.createContext(CALLBACK_PATH, new CallbackHandler());
-
-        // This creates a NEW handler for the keep-alive ping on the root path "/"
-        server.createContext("/", new KeepAliveHandler());
         server.setExecutor(null);
         server.start();
-        System.out.println("Server started on port 8080. Listening for OAuth on " + CALLBACK_PATH + " and keep-alive on /");
+        System.out.println("OAuth callback server started on http://localhost:" + PORT + CALLBACK_PATH);
     }
 
-    static class KeepAliveHandler implements HttpHandler {
-        @Override
-        public void handle(HttpExchange exchange) throws IOException {
-            String response = "Bot is alive";
-            exchange.sendResponseHeaders(200, response.length());
-            try (OutputStream os = exchange.getResponseBody()) {
-                os.write(response.getBytes());
-            }
-        }
-    }
 
     static class CallbackHandler implements HttpHandler {
         @Override
@@ -81,11 +66,9 @@ public class OAuthCallbackServer {
                             .setAccessType("offline")
                             .build();
 
-                    String publicUrl = System.getenv("PUBLIC_URL");
-                    String redirectUri = publicUrl + CALLBACK_PATH;
 
                     var tokenResponse = flow.newTokenRequest(code)
-                            .setRedirectUri(redirectUri)
+                            .setRedirectUri("http://localhost:8888/Callback")
                             .execute();
 
 

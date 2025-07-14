@@ -174,13 +174,13 @@ public class Bot extends TelegramLongPollingBot {
                 SendMessage confirmationRequest = SendMessage.builder()
                         .chatId(context.getChatId().toString())
                         .text("📝 *Event Details:*\n\n" +
-                                "*Summary:* " + eventDetails.getSummary() + "\n" +
-                                "*Description:* " + eventDetails.getDescription() + "\n" +
+                                "*Summary:* " + eventDetails.getSummary() + "\n\n" +
+                                "*Description:* " + eventDetails.getDescription() + "\n\n" +
                                 "*Start DateTime:* " + LocalDateTime.parse(eventDetails.getStartDateTime(), DateTimeFormatter.ISO_DATE_TIME)
-                                .format(DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy h:mm a")) + "\n"  +
+                                .format(DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy h:mm a")) + "\n\n"  +
                                 "*End DateTime:* " + LocalDateTime.parse(eventDetails.getEndDateTime(), DateTimeFormatter.ISO_DATE_TIME)
-                                .format(DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy h:mm a")) + "\n"  +
-                                "*Location:* " + eventDetails.getLocation() + "\n\n" +
+                                .format(DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy h:mm a")) + "\n\n"  +
+                                "*Location:* " + eventDetails.getLocation() + "\n\n\n" +
                                 "Do you want to add this event to your calendar?")
                         .parseMode("Markdown")
                         .replyMarkup(InlineKeyboardMarkup.builder()
