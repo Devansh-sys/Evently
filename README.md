@@ -1,6 +1,7 @@
 # 🤖 Evently: AI-Powered Event Management Telegram Bot (Java Edition)
 
-![Evently Banner](assets/evently-banner.png)
+
+![photo_2025-05-31_22-22-13](https://github.com/user-attachments/assets/e0abc1ff-fed2-43a9-b84c-d35ffcc8466b)
 
 Evently is a Java-based Telegram bot engineered for seamless, intelligent, and secure event management. Leveraging Google Gemini for natural language understanding, Google Calendar API for scheduling, and Supabase Postgres for persistent user authorization, Evently delivers a frictionless and robust experience for real users.
 
@@ -42,11 +43,13 @@ Evently is a Java-based Telegram bot engineered for seamless, intelligent, and s
 ---
 
 ## 🖼️ Screenshots
+![photo_2025-06-01_00-21-02](https://github.com/user-attachments/assets/3f4955df-8b05-49ba-a9f6-b9b28fb5366f)
 
-<p align="center">
-  <img src="assets/evently-demo-1.png" alt="Evently Telegram Bot Screenshot" width="450"/>
-  <img src="assets/evently-demo-2.png" alt="Evently Google Calendar Integration" width="450"/>
-</p>
+![photo_2025-06-01_00-21-08](https://github.com/user-attachments/assets/307a1d52-26d8-4916-bc94-e558185fa918)
+![photo_2025-06-01_00-21-13](https://github.com/user-attachments/assets/07987c10-fcb5-4ad9-ac08-bf7f2646d7a8)
+![photo_2025-06-01_00-21-10](https://github.com/user-attachments/assets/5f804e7f-4b27-4ae0-87e8-4252711a1d7d)
+![photo_2025-06-01_00-21-15](https://github.com/user-attachments/assets/32d129f5-4813-4ddc-8923-7017c8e86428)
+![photo_2025-06-01_00-21-21](https://github.com/user-attachments/assets/a6a55c54-5a63-4b87-95d5-3c5f5935a2c9)
 
 ---
 
